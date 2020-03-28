@@ -17,8 +17,14 @@ library stringLibrary {
                 )
             }
 
-            let inputSize := mload(input) // 32 bytes
-            output := allocate(inputSize)
+            let dataSize := mload(input) // 32 bytes
+            if gt(dataSize, 32) {
+                revert(0, 0)
+            }
+            if gt(index, sub(dataSize, 1)) {
+                revert(0, 0)
+            }
+            output := allocate(dataSize)
             mstore(output, 1)
             mstore(
                 add(output, 0x20),
@@ -43,6 +49,9 @@ library stringLibrary {
             }
 
             let dataSize := add(mload(input1), mload(input2)) // 32 bytes
+            if gt(dataSize, 32) {
+                revert(0, 0)
+            }
             output := allocate(dataSize)
             mstore(output, dataSize)
             mstore(
@@ -50,6 +59,68 @@ library stringLibrary {
                 add(mload(0xa0), shr(mul(8, mload(input1)), mload(0xe0)))
             )
         }
+    }
+
+    function matchStrings(string memory input1, string memory input2)
+        public
+        pure
+        returns (bool)
+    {
+        return (keccak256(abi.encodePacked((input1))) ==
+            keccak256(abi.encodePacked((input2))));
+    }
+
+    function slice(string memory input, uint256 startIndex, uint256 endIndex)
+        public
+        pure
+        returns (string memory output)
+    {
+        assembly {
+            if gt(startIndex, endIndex) {
+                revert(0, 0)
+            }
+            function allocate(length) -> pos {
+                let freePointer := 0x40
+                pos := mload(freePointer)
+                mstore(
+                    freePointer,
+                    add(pos, and(add(add(length, 0x20), 0x1f), not(0x1f)))
+                )
+            }
+            let dataSize := mload(input)
+            if gt(dataSize, 32) {
+                revert(0, 0)
+            }
+            if gt(endIndex, sub(input, 1)) {
+                revert(0, 0)
+            }
+            if gt(startIndex, sub(input, 1)) {
+                revert(0, 0)
+            }
+            output := allocate(dataSize)
+            let size := sub(endIndex, startIndex)
+            mstore(output, size)
+            mstore(add(output, 0x20), mload(add(0xa0, startIndex)))
+        }
+    }
+
+    function slice(string memory input, uint256 index)
+        public
+        pure
+        returns (string memory output)
+    {
+        uint256 inputLength;
+        assembly {
+            inputLength := mload(input)
+            if gt(input, 32) {
+                revert(0, 0)
+            }
+            if gt(index, inputLength) {
+                revert(0, 0)
+            }
+        }
+        output = slice(input, index, inputLength);
+        return output;
     }
 
     function length(string memory input)
