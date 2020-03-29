@@ -1,7 +1,7 @@
-pragma solidity ^0.6.0;
+pragma solidity ^0.5.16;
 
 
-library stringLibrary {
+library libraryString {
     function charAt(string memory input, uint256 index)
         public
         pure
@@ -91,10 +91,7 @@ library stringLibrary {
             if gt(dataSize, 32) {
                 revert(0, 0)
             }
-            if gt(endIndex, sub(input, 1)) {
-                revert(0, 0)
-            }
-            if gt(startIndex, sub(input, 1)) {
+            if gt(endIndex, dataSize) {
                 revert(0, 0)
             }
             output := allocate(dataSize)
@@ -112,12 +109,6 @@ library stringLibrary {
         uint256 inputLength;
         assembly {
             inputLength := mload(input)
-            if gt(input, 32) {
-                revert(0, 0)
-            }
-            if gt(index, inputLength) {
-                revert(0, 0)
-            }
         }
         output = slice(input, index, inputLength);
         return output;
