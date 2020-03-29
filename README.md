@@ -51,18 +51,18 @@ Two libraries which are built in both ways (assembly and non-assembly) to compar
 
 Gas used libraryString and libraryStringNonAssembly
 
-- **concat**
+- **concat** <br/>
   ![](/documentation/concatAssembly.png "Concat using Assembly")
   ![](/documentation/concatNonAssembly.png "Concat no using Assembly")
-- **charAt**
+- **charAt** <br />
   ![](/documentation/charAtAssembly.png "charAt using Assembly")
   ![](/documentation/charAtNonAssembly.png "charAt no using Assembly")
 
-* **length**
+* **length** <br />
   ![](/documentation/lengthAssembly.png "length using Assembly")
   ![](/documentation/lengthNonAssembly.png "length no using Assembly")
 
-* **slice**
+* **slice** <br />
   ![](/documentation/sliceAssembly.png "slice using Assembly")
   ![](/documentation/sliceNonAssembly.png "slice no using Assembly")
 
