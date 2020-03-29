@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The project is a assignment for Advance Smart Contract in George Brown College. It aims to build string operations using assembly for Solidity.
+The project is an assignment for Advance Smart Contract in George Brown College. It aims to build string operations using assembly for Solidity.
 
 ## Author Information
 
